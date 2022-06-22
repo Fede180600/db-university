@@ -4,7 +4,7 @@ require_once __DIR__ . "/Department.php";
 
 
 // query per database
-$sql = "SELECT * FROM `departments`";
+$sql = "SELECT `id`, `name` FROM `departments`";
 $result = $conn->query($sql);
 
 $departments = [];
@@ -12,8 +12,10 @@ $departments = [];
 // controllo la risposta della query
 if ($result && $result->num_rows > 0) {
     while ($row = $result->fetch_assoc()) {
-        $departments[] = $row;
+        $current_department = new Department($row["id"], $row["name"]);
+        $departments[] = $current_department;
     }
+
     // var_dump($departments);
 } elseif ($result) {
 
@@ -38,8 +40,8 @@ if ($result && $result->num_rows > 0) {
     <?php foreach($departments as $department) {?>
 
         <section>
-            <h2><?php echo $department["name"] ?></h2>
-            <a href="">Vedi info</a>
+            <h2><?php echo $department->name; ?></h2>
+            <a href="single_department.php?id=<?php echo $department->id; ?>">Vedi info</a>
         </section>
 
     <?php } ?>
